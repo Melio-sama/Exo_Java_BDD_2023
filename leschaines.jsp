@@ -1,83 +1,91 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <html>
 <head>
-<title>Les Chaines</title>
+<title>Les Tableaux</title>
 </head>
 <body bgcolor=white>
-<h1>Exercices sur les chaines de caractères</h1>
+<h1>Exercices sur les tableaux</h1>
 <form action="#" method="post">
-    <p>Saisir une chaine (Du texte avec 6 caractères minimum) : <input type="text" name="chaine">
+    <p>Saisir au minimum 3 chiffres à la suite, exemple : 6 78 15 <input type="text" name="chaine">
     <p><input type="submit" value="Afficher">
 </form>
-<%-- Récupération de la valeur saisie --%>
+<%-- Récupération de la chaine saisie --%>
 <% String chaine = request.getParameter("chaine"); %>
 
-<% if (chaine != null && chaine.length() >= 6) { %>
-    <p>La longueur de votre chaîne est de <%= chaine.length() %> caractères</p>
-    <p>Le 3° caractère de votre chaine est la lettre <%= chaine.charAt(2) %></p>
-    <p>Une sous chaine de votre texte : <%= chaine.substring(2, 6) %></p>
-    <p>Votre premier "e" est en : <%= chaine.indexOf('e') %></p>
-
-    <h2>Exercice 1 : Combien de 'e' dans notre chaine de caractère ?</h2>
-    <p>
-    <% int compteurE = 0;
-       for (int i = 0; i < chaine.length(); i++) {
-           if (chaine.charAt(i) == 'e') {
-               compteurE++;
-           }
+<% if (chaine != null && !chaine.isEmpty()) { %>
+    <% String[] tableauDeChiffres = chaine.split("\\s+");
+       int[] valeurs = new int[tableauDeChiffres.length];
+       for (int i = 0; i < tableauDeChiffres.length; i++) {
+           valeurs[i] = Integer.parseInt(tableauDeChiffres[i]);
        }
     %>
-    Nombre de lettre 'e' dans votre chaîne : <%= compteurE %>
-    </p>
-
-    <h2>Exercice 2 : Affichage vertical</h2>
-    <p>
-    <% for (int i = 0; i < chaine.length(); i++) { %>
-        <%= chaine.charAt(i) %><br>
+    <p>Le tableau contient <%= valeurs.length %> valeurs</br>
+    <% for (int i = 0; i < valeurs.length; i++) { %>
+        Chiffre <%= i + 1 %>: <%= valeurs[i] %></br>
     <% } %>
+
+    <h2>Exercice 1 : Le carré de la première valeur</h2>
+    <p>Carré de la première valeur : <%= valeurs[0] * valeurs[0] %></p>
+
+    <h2>Exercice 2 : La somme des 2 premières valeurs</h2>
+    <p>Somme des deux premières valeurs : <%= valeurs[0] + valeurs[1] %></p>
+
+    <h2>Exercice 3 : La somme de toutes les valeurs</h2>
+    <p>
+    <% int somme = 0;
+       for (int valeur : valeurs) {
+           somme += valeur;
+       }
+    %>
+    Somme de toutes les valeurs : <%= somme %>
     </p>
 
-    <h2>Exercice 3 : Retour à la ligne</h2>
+    <h2>Exercice 4 : La valeur maximum</h2>
     <p>
-    <% for (int i = 0; i < chaine.length(); i++) {
-           if (chaine.charAt(i) == ' ') {
-               out.println("<br>");
-           } else {
-               out.print(chaine.charAt(i));
+    <% int max = valeurs[0];
+       for (int valeur : valeurs) {
+           if (valeur > max) {
+               max = valeur;
            }
        }
     %>
+    Valeur maximale : <%= max %>
     </p>
 
-    <h2>Exercice 4 : Afficher une lettre sur deux</h2>
+    <h2>Exercice 5 : La valeur minimale</h2>
     <p>
-    <% for (int i = 0; i < chaine.length(); i += 2) {
-           out.print(chaine.charAt(i));
-       }
-    %>
-    </p>
-
-    <h2>Exercice 5 : La phrase en verlan</h2>
-    <p>
-    <% for (int i = chaine.length() - 1; i >= 0; i--) {
-           out.print(chaine.charAt(i));
-       }
-    %>
-    </p>
-
-    <h2>Exercice 6 : Consonnes et voyelles</h2>
-    <p>
-    <% int voyelles = 0, consonnes = 0;
-       for (int i = 0; i < chaine.length(); i++) {
-           char c = chaine.charAt(i);
-           if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'y') {
-               voyelles++;
-           } else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
-               consonnes++;
+    <% int min = valeurs[0];
+       for (int valeur : valeurs) {
+           if (valeur < min) {
+               min = valeur;
            }
        }
     %>
-    Nombre de voyelles : <%= voyelles %>, Nombre de consonnes : <%= consonnes %>
+    Valeur minimale : <%= min %>
+    </p>
+
+    <h2>Exercice 6 : La valeur la plus proche de 0</h2>
+    <p>
+    <% int plusProcheDeZero = valeurs[0];
+       for (int valeur : valeurs) {
+           if (Math.abs(valeur) < Math.abs(plusProcheDeZero)) {
+               plusProcheDeZero = valeur;
+           }
+       }
+    %>
+    Valeur la plus proche de 0 : <%= plusProcheDeZero %>
+    </p>
+
+    <h2>Exercice 7 : La valeur la plus proche de 0</h2>
+    <p>
+    <% int plusProcheDeZeroV2 = valeurs[0];
+       for (int valeur : valeurs) {
+           if (Math.abs(valeur) < Math.abs(plusProcheDeZeroV2) || (Math.abs(valeur) == Math.abs(plusProcheDeZeroV2) && valeur > plusProcheDeZeroV2)) {
+               plusProcheDeZeroV2 = valeur;
+           }
+       }
+    %>
+    Valeur la plus proche de 0 : <%= plusProcheDeZeroV2 %>
     </p>
 
 <% } %>
